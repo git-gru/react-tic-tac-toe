@@ -1,26 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Game, XO } from "./TicTacToe";
+import "./App.css";
 
-function App() {
+const game = new Game();
+
+const App: React.FC = () => {
+  const [, setField] = useState<XO[]>(game.cells);
+
+  function cell(i: number) {
+    return (
+      <td
+        onClick={() => {
+          game.makeMove(i);
+          setField(game.cells.slice());
+        }}
+      >
+        {game.cells[i]}
+      </td>
+    );
+  }
+
+  function reset() {
+    game.confirm();
+  }
+
   return (
-    <div className="App">
+    <div id="main" className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Tic-Tac-Toe</h1>
       </header>
+      <h2 className="result">{game.getResult()}</h2>
+      <table>
+        <tbody>
+          <tr>
+            {cell(0)}
+            {cell(1)}
+            {cell(2)}
+          </tr>
+          <tr>
+            {cell(3)}
+            {cell(4)}
+            {cell(5)}
+          </tr>
+          <tr>
+            {cell(6)}
+            {cell(7)}
+            {cell(8)}
+          </tr>
+        </tbody>
+      </table>
+      <button
+        className="resetBtn"
+        onClick={() => {
+          reset();
+          setField(game.cells.slice());
+        }}
+      >
+        Restart Game
+      </button>
     </div>
   );
-}
+};
 
 export default App;
